@@ -18,7 +18,7 @@ def parse(self, exclusive = False, training = True):
         msg = 'Annotation directory not found {} .'
         exit('Error: {}'.format(msg.format(ann)))
     print('\n{} parsing {}'.format(meta['model'], ann))
-    dumps = pascal_voc_clean_xml(ann, 'labels.txt', exclusive)
+    dumps = pascal_voc_clean_xml(ann, meta['labels'], exclusive)
     return dumps
 
 
