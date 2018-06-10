@@ -18,7 +18,7 @@ def parse(self, exclusive = False, training = True):
         msg = 'Annotation directory not found {} .'
         exit('Error: {}'.format(msg.format(ann)))
     print('\n{} parsing {}'.format(meta['model'], ann))
-    dumps = pascal_voc_clean_xml(ann, meta['labels'], exclusive)
+    dumps = pascal_voc_clean_xml(ann, 'labels.txt', exclusive)
     return dumps
 
 
@@ -141,7 +141,7 @@ def shuffle(self, training = True):
     else:
         i = 0
         while (True == True):
-            shuffle_idx = perm(np.arrange(size))
+            shuffle_idx = perm(np.arange(size))
             for b in range(batch_per_epoch):
                 # yield these
                 x_batch = list()
@@ -161,8 +161,8 @@ def shuffle(self, training = True):
                         feed_batch[key] = np.concatenate([
                             old_feed, [new]
                             ])
-                        x_batch = np.concatenate(x_batch, 0)
-                        yield x_batch, feed_batch
-                    i+=1
+                x_batch = np.concatenate(x_batch, 0)
+                yield x_batch, feed_batch
+            i+=1
         print('Finish {} epoch(es)'.format(i + 1))
 
