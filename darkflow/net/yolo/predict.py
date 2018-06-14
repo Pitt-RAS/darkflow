@@ -8,7 +8,7 @@ from ...cython_utils.cy_yolo_findboxes import yolo_box_constructor
 import imgaug as ia
 from imgaug import augmenters as iaa
 
-sometimes = lambda aug: iaa.Sometimes(0.5, aug)
+sometimes = lambda aug: iaa.Sometimes(0.7, aug)
 
 seq = iaa.Sequential(
     [
@@ -51,7 +51,6 @@ seq = iaa.Sequential(
                 iaa.ContrastNormalization((0.5, 2.0), per_channel=0.5), # improve or worsen the contrast
                 iaa.Grayscale(alpha=(0.0, 1.0)),
                 sometimes(iaa.ElasticTransformation(alpha=(0.5, 3.5), sigma=0.25)), # move pixels locally around (with random strengths)
-                sometimes(iaa.PiecewiseAffine(scale=(0.01, 0.05))), # sometimes move parts of the image around
                 sometimes(iaa.PerspectiveTransform(scale=(0.01, 0.1)))
             ],
             random_order=True
