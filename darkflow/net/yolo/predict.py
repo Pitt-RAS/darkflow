@@ -125,7 +125,9 @@ def preprocess(self, im, allobj = None):
 		im = imcv2_recolor(im)
                 im = seq.augment_images(im)
 
-	im = self.resize_input(im)
+        images = [im]
+	images = self.resize_input(images)
+        im = images[0]
 	if allobj is None: return im
 	return im#, np.array(im) # for unit testing
 
