@@ -123,7 +123,9 @@ class TFNet(object):
 	def setup_meta_ops(self):
 		cfg = dict({
 			'allow_soft_placement': False,
-			'log_device_placement': False
+			'log_device_placement': False,
+                        'inter_op_parallelism_threads': 1,
+                        'intra_op_parallelism_threads': 8,
 		})
 
 		utility = min(self.FLAGS.gpu, 1.)
