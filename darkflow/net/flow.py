@@ -75,7 +75,7 @@ def train(self):
         feed_dict = {
             loss_ph[key]: datum[key] 
                 for key in loss_ph }
-        feed_dict[self.inp] = x_batch
+        feed_dict[self.inp_train] = x_batch
         feed_dict.update(self.feed)
 
         fetches = [self.train_op, loss_op]

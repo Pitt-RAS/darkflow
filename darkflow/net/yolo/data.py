@@ -18,7 +18,7 @@ def parse(self, exclusive = False, training = True):
         msg = 'Annotation directory not found {} .'
         exit('Error: {}'.format(msg.format(ann)))
     print('\n{} parsing {}'.format(meta['model'], ann))
-    dumps = pascal_voc_clean_xml(ann, 'labels.txt', exclusive)
+    dumps = pascal_voc_clean_xml(ann, meta['labels'], exclusive)
     return dumps
 
 
@@ -112,32 +112,23 @@ def shuffle(self, training = True):
             shuffle_idx = perm(np.arange(size))
             for b in range(batch_per_epoch):
                 # yield these
-                x_batch = list()
                 feed_batch = dict()
 
+                train_instances = []
                 for j in range(b*batch, b*batch+batch):
-                    train_instance = data[shuffle_idx[j]]
-                    try:
-                        inp, new_feed = self._batch(train_instance)
-                    except ZeroDivisionError:
-                        print("This image's width or height are zeros: ", train_instance[0])
-                        print('train_instance:', train_instance)
-                        print('Please remove or fix it then try again.')
-                        raise
+                    train_instances.append(data[shuffle_idx[j]])
 
-                    if inp is None: continue
-                    x_batch += [np.expand_dims(inp, 0)]
+                inps, new_feeds = self._batch_vectorized(train_instances)
 
+                for new_feed in new_feeds:
                     for key in new_feed:
                         new = new_feed[key]
-                        old_feed = feed_batch.get(key, 
+                        old_feed = feed_batch.get(key,
                             np.zeros((0,) + new.shape))
-                        feed_batch[key] = np.concatenate([ 
-                            old_feed, [new] 
-                        ])      
-            
-                x_batch = np.concatenate(x_batch, 0)
-                yield x_batch, feed_batch
+                        feed_batch[key] = np.concatenate([old_feed, [new]])
+
+                # x_batch is a B * H * W tensor
+                yield inps, feed_batch
     else:
         i = 0
         while (True == True):

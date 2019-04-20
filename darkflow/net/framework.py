@@ -36,10 +36,12 @@ class YOLOv2(framework):
     parse = yolo.data.parse
     shuffle = yolov2.data.shuffle
     preprocess = yolo.predict.preprocess
+    preprocess_vectorized = yolo.predict.preprocess_vectorized
     loss = yolov2.train.loss
     is_inp = yolo.misc.is_inp
     postprocess = yolov2.predict.postprocess
     _batch = yolov2.data._batch
+    _batch_vectorized = yolov2.data._batch_vectorized
     resize_input = yolo.predict.resize_input
     findboxes = yolov2.predict.findboxes
     process_box = yolo.predict.process_box

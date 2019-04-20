@@ -42,18 +42,18 @@ def pascal_voc_clean_xml(ANN, pick, exclusive = False):
         all = list()
 
         for obj in root.iter('object'):
-                current = list()
-                name = obj.find('name').text
-                if name not in pick:
-                        continue
+            current = list()
+            name = obj.find('name').text
+            if name not in pick:
+                continue
 
-                xmlbox = obj.find('bndbox')
-                xn = int(float(xmlbox.find('xmin').text))
-                xx = int(float(xmlbox.find('xmax').text))
-                yn = int(float(xmlbox.find('ymin').text))
-                yx = int(float(xmlbox.find('ymax').text))
-                current = [name,xn,yn,xx,yx]
-                all += [current]
+            xmlbox = obj.find('bndbox')
+            xn = int(float(xmlbox.find('xmin').text))
+            xx = int(float(xmlbox.find('xmax').text))
+            yn = int(float(xmlbox.find('ymin').text))
+            yx = int(float(xmlbox.find('ymax').text))
+            current = [name,xn,yn,xx,yx]
+            all += [current]
 
         add = [[jpg, [w, h, all]]]
         dumps += add
